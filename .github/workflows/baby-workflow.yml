@@ -1,12 +1,40 @@
+# Minimal GitHub Actions workflow
+# Demonstrates triggers, jobs, and steps
+# without using any external Action
+
 name: My First Workflow
 
+# 1️⃣ When should it run?
 on:
-push:
-workflow_dispatch:
+  push:           # every time you push new commits
+  workflow_dispatch:  # and manually from the Actions tab
 
 jobs:
-say-hello:
-runs-on: ubuntu-latest
-steps:
-- name: Afficher un message
-run: echo "Hello from Jedha!"
+  say-hello:          # name of the job
+    runs-on: ubuntu-latest   # GitHub provides an Ubuntu VM
+
+    steps:
+      # 2️⃣ Every job contains sequential steps
+      # Each step runs a shell command on the runner
+
+      - name: Print greeting
+        run: echo "👋 Hello from Jedha!"
+
+      - name: Show system info
+        run: |
+          echo "🖥️ OS Info:" && uname -a
+          echo "👤 Current user:" && whoami
+          echo "📁 Working directory:" && pwd
+
+      - name: Install figlet
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y figlet
+
+      - name: Print an ASCII message
+        run: |
+          figlet "Do or do not."
+          figlet "There is no try."
+
+      - name: Wrap up
+        run: echo "✅ Workflow completed successfully!"
